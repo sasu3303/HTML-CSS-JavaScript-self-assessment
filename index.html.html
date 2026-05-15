@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HTML/CSS/JS Self-Assessment: A demonstration of HTML structure, CSS styling, and JavaScript concepts." />
+  <meta name="keywords" content="HTML, CSS, JavaScript, web development, self-assessment" />
+  <meta name="author" content="Student" />
+  <meta property="og:title" content="HTML + CSS + JS Self Assessment" />
+  <meta property="og:description" content="Demonstrating HTML, CSS, and JavaScript fundamentals." />
+  <meta name="robots" content="index, follow" />
+  <title>HTML + CSS + JS Self Assessment</title>
+
+  <!-- Fonts -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=cabinet-grotesk@700,800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root, [data-theme="light"] {
+      --font-display: 'Cabinet Grotesk', 'Helvetica Neue', sans-serif;
+      --font-body: 'Satoshi', 'Inter', sans-serif;
+
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+      --space-4: 1rem;    --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem;    --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem;   --space-20: 5rem;
+
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #fbfbf9;
+      --color-surface-offset: #f3f0ec;
+      --color-divider: #dcd9d5;
+      --color-border: #d4d1ca;
+      --color-text: #28251d;
+      --color-text-muted: #7a7974;
+      --color-text-faint: #bab9b4;
+      --color-primary: #01696f;
+      --color-primary-hover: #0c4e54;
+      --color-primary-highlight: #cedcd8;
+      --color-warning: #964219;
+      --color-error: #a12c7b;
+      --color-success: #437a22;
+
+      --radius-sm: 0.375rem; --radius-md: 0.5rem;
+      --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+      --shadow-md: 0 4px 12px oklch(0.2 0.01 80 / 0.08);
+      --shadow-lg: 0 12px 32px oklch(0.2 0.01 80 / 0.12);
+
+      --content-default: 960px;
+      --content-wide: 1200px;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d;
+      --color-surface-offset: #1d1c1a; --color-divider: #262523; --color-border: #393836;
+      --color-text: #cdccca; --color-text-muted: #797876; --color-text-faint: #5a5957;
+      --color-primary: #4f98a3; --color-primary-hover: #227f8b;
+      --color-primary-highlight: #313b3b;
+      --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+      --shadow-md: 0 4px 12px oklch(0 0 0 / 0.3);
+      --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+    }
+
+    /* ===== BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: var(--space-16); }
+    body {
+      min-height: 100dvh; line-height: 1.6;
+      font-family: var(--font-body); font-size: var(--text-base);
+      color: var(--color-text); background-color: var(--color-bg);
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    h1,h2,h3,h4,h5,h6 { text-wrap: balance; line-height: 1.15; font-family: var(--font-display); }
+    p, li { text-wrap: pretty; }
+    a, button, [role="button"], input, textarea, select {
+      transition: color var(--transition-interactive), background var(--transition-interactive),
+                  border-color var(--transition-interactive), box-shadow var(--transition-interactive);
+    }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    button { cursor: pointer; background: none; border: none; font-family: var(--font-body); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: var(--content-default); margin-inline: auto; padding-inline: var(--space-6); }
+    .container--wide { max-width: var(--content-wide); margin-inline: auto; padding-inline: var(--space-6); }
+
+    /* ===== NAVBAR ===== */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-surface);
+      border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.10);
+      box-shadow: var(--shadow-sm);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-4) var(--space-6); max-width: var(--content-wide);
+      margin-inline: auto;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: var(--space-2);
+      text-decoration: none; color: var(--color-text);
+      font-family: var(--font-display); font-size: var(--text-lg); font-weight: 800;
+    }
+    .nav-links { display: flex; align-items: center; gap: var(--space-6); list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--color-text-muted); font-size: var(--text-sm);
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--color-primary); }
+    .nav-right { display: flex; align-items: center; gap: var(--space-3); }
+    #theme-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: var(--radius-full);
+      color: var(--color-text-muted); background: var(--color-surface-offset);
+    }
+    #theme-toggle:hover { color: var(--color-primary); background: var(--color-primary-highlight); }
+
+    /* ===== HERO / MAIN HEADER ===== */
+    .hero {
+      padding: var(--space-20) var(--space-6) var(--space-16);
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .hero-inner { max-width: var(--content-default); margin-inline: auto; }
+    .hero-tag {
+      display: inline-block; font-size: var(--text-xs); font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-primary); background: var(--color-primary-highlight);
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+      margin-bottom: var(--space-4);
+    }
+    .hero h1 {
+      font-size: var(--text-2xl); font-weight: 800; color: var(--color-text);
+      margin-bottom: var(--space-4); max-width: 16ch;
+    }
+    .hero p {
+      font-size: var(--text-lg); color: var(--color-text-muted);
+      max-width: 52ch; line-height: 1.7;
+    }
+
+    /* ===== SECTION HEADINGS ===== */
+    .section { padding: var(--space-16) var(--space-6); }
+    .section--alt { background: var(--color-surface); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-2);
+    }
+    .section-title {
+      font-size: var(--text-xl); font-weight: 800; color: var(--color-text);
+      margin-bottom: var(--space-2);
+    }
+    .section-desc {
+      font-size: var(--text-base); color: var(--color-text-muted);
+      max-width: 56ch; margin-bottom: var(--space-8);
+    }
+    hr.divider {
+      border: none; border-top: 1px solid var(--color-divider);
+      margin: var(--space-8) 0;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: var(--color-surface-2); border-radius: var(--radius-xl);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+      padding: var(--space-6); box-shadow: var(--shadow-sm);
+    }
+    .card h3 { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-2); }
+    .card p { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+    /* ===== TAG LIST ===== */
+    .tag-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-3); margin-top: var(--space-4);
+    }
+    .tag-item {
+      background: var(--color-surface-2);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+      border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+    .tag-item code {
+      font-size: var(--text-sm); font-weight: 700; color: var(--color-primary);
+      font-family: 'Courier New', monospace; display: block; margin-bottom: var(--space-1);
+    }
+    .tag-item span { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+    /* ===== SEO TAGS ===== */
+    .seo-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
+    .seo-list li {
+      display: flex; gap: var(--space-4); align-items: flex-start;
+      padding: var(--space-4); border-radius: var(--radius-lg);
+      background: var(--color-surface-2);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+    }
+    .seo-list code {
+      font-family: 'Courier New', monospace; font-size: var(--text-xs);
+      color: var(--color-primary); background: var(--color-primary-highlight);
+      padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .seo-list span { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+    /* ===== 3x3 GRID (divs + spans only, no CSS grid/table) ===== */
+    .pure-grid { margin-top: var(--space-6); }
+    .pure-row { display: flex; }
+    .pure-cell {
+      flex: 1; min-height: 80px;
+      border: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-sm); color: var(--color-text-muted);
+      background: var(--color-surface-2);
+    }
+    .pure-cell:nth-child(odd) { background: var(--color-surface-offset); }
+    .pure-row + .pure-row .pure-cell { border-top: none; }
+    .pure-row .pure-cell + .pure-cell { border-left: none; }
+
+    /* ===== BOX MODEL GALLERY ===== */
+    .box-gallery { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
+    .box-row { display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: flex-start; }
+    .box-row-label {
+      font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      width: 100%; margin-bottom: var(--space-2);
+    }
+    .box-demo {
+      background: var(--color-primary-highlight);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 2px;
+      min-width: 80px;
+    }
+    .box-demo span { font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; }
+
+    /* Row 1: border changes (0px, 5px, 10px), margin=8px, padding=12px */
+    .b0  { border: 0px solid var(--color-primary);   margin: 8px;  padding: 12px; }
+    .b5  { border: 5px solid var(--color-primary);   margin: 8px;  padding: 12px; }
+    .b10 { border: 10px solid var(--color-primary);  margin: 8px;  padding: 12px; }
+
+    /* Row 2: margin changes (0px, 10px, 20px), border=3px, padding=12px */
+    .m0  { border: 3px solid var(--color-warning);   margin: 0px;  padding: 12px; }
+    .m10 { border: 3px solid var(--color-warning);   margin: 10px; padding: 12px; }
+    .m20 { border: 3px solid var(--color-warning);   margin: 20px; padding: 12px; }
+
+    /* Row 3: padding changes (0px, 10px, 24px), border=3px, margin=8px */
+    .p0  { border: 3px solid var(--color-success);   margin: 8px;  padding: 0px;  }
+    .p10 { border: 3px solid var(--color-success);   margin: 8px;  padding: 10px; }
+    .p24 { border: 3px solid var(--color-success);   margin: 8px;  padding: 24px; }
+
+    /* ===== FONT SIZE LIST ===== */
+    .font-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
+    .font-list li {
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-surface-2);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+      border-radius: var(--radius-lg);
+    }
+    .font-list .unit-label {
+      display: inline-block; font-size: var(--text-xs); color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+
+    /* ===== POSITIONING DEMO ===== */
+    .position-demo {
+      position: relative; min-height: 320px;
+      background: var(--color-surface-2); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border); overflow: hidden;
+      margin-top: var(--space-6); padding: var(--space-6);
+    }
+    .pos-box {
+      width: 160px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+      font-size: var(--text-xs); font-weight: 600; color: #fff;
+    }
+    .pos-static  { position: static;   background: var(--color-primary);   margin-bottom: var(--space-3); }
+    .pos-relative{ position: relative; background: var(--color-warning);   top: 12px; left: 20px; margin-bottom: var(--space-3);}
+    .pos-absolute{ position: absolute; background: var(--color-error);     bottom: var(--space-4); right: var(--space-6); }
+    .pos-fixed-demo {
+      /* Shown as sticky within the section; true fixed used for footer */
+      position: sticky; top: 80px; background: #437a22;
+      width: 160px; padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md); font-size: var(--text-xs);
+      font-weight: 600; color: #fff; align-self: flex-start; margin-bottom: var(--space-3);
+    }
+    .pos-desc { font-size: var(--text-xs); color: var(--color-text-muted); max-width: 48ch; margin-top: var(--space-2); }
+    .pos-legend { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
+    .pos-legend li {
+      display: flex; gap: var(--space-3); align-items: flex-start;
+      font-size: var(--text-sm); color: var(--color-text-muted);
+    }
+    .pos-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+    /* ===== FOOTER — FIXED TO BOTTOM ===== */
+    footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: var(--color-surface);
+      border-top: 1px solid oklch(from var(--color-text) l c h / 0.10);
+      box-shadow: 0 -2px 8px oklch(0.2 0.01 80 / 0.06);
+      padding: var(--space-3) var(--space-6);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: var(--text-xs); color: var(--color-text-muted); }
+    .footer-links { display: flex; gap: var(--space-4); list-style: none; }
+    .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); text-decoration: none; }
+    .footer-links a:hover { color: var(--color-primary); }
+
+    /* padding so footer doesn't hide content */
+    body { padding-bottom: 60px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      nav { padding: var(--space-3) var(--space-4); }
+      .nav-links { display: none; }
+      .hero { padding: var(--space-12) var(--space-4) var(--space-10); }
+      .section { padding: var(--space-10) var(--space-4); }
+      .box-row { flex-direction: column; }
+      footer { flex-direction: column; gap: var(--space-2); text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===== SKIP LINK ===== -->
+<a href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" class="sr-only">Skip to content</a>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+  <nav aria-label="Main navigation">
+    <a href="#" class="nav-logo" aria-label="Home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="10" height="10" rx="2" fill="var(--color-primary)"/>
+        <rect x="16" y="2" width="10" height="10" rx="2" fill="var(--color-primary)" opacity="0.5"/>
+        <rect x="2" y="16" width="10" height="10" rx="2" fill="var(--color-primary)" opacity="0.5"/>
+        <rect x="16" y="16" width="10" height="10" rx="2" fill="var(--color-primary)"/>
+      </svg>
+      WebDev
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#html-tags">HTML Tags</a></li>
+      <li><a href="#seo">SEO</a></li>
+      <li><a href="#grid">Grid</a></li>
+      <li><a href="#box-model">Box Model</a></li>
+      <li><a href="#fonts">Font Sizes</a></li>
+      <li><a href="#positioning">Positioning</a></li>
+    </ul>
+    <div class="nav-right">
+      <button id="theme-toggle" aria-label="Switch to dark mode" data-theme-toggle>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- HERO / MAIN HEADER -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-inner">
+      <span class="hero-tag">Self Assessment</span>
+      <h1 id="hero-heading">HTML + CSS + JavaScript</h1>
+      <p>A hands-on walkthrough of the core building blocks of the web — structure, style, and interactivity. Each section demonstrates a key concept from the course readings.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 1: 10 MOST USEFUL HTML TAGS -->
+  <section class="section" id="html-tags" aria-labelledby="html-tags-heading">
+    <div class="container">
+      <p class="section-label">HTML — Section 1</p>
+      <h2 class="section-title" id="html-tags-heading">10 Most Useful HTML Tags</h2>
+      <p class="section-desc">These tags form the backbone of almost every webpage — from structure to interactive forms.</p>
+
+      <div class="tag-grid">
+        <div class="tag-item"><code>&lt;div&gt;</code><span>Generic block container for grouping content</span></div>
+        <div class="tag-item"><code>&lt;p&gt;</code><span>Paragraph — the main unit of text content</span></div>
+        <div class="tag-item"><code>&lt;a&gt;</code><span>Anchor/link to other pages or sections</span></div>
+        <div class="tag-item"><code>&lt;img&gt;</code><span>Embeds an image with alt text for accessibility</span></div>
+        <div class="tag-item"><code>&lt;ul&gt; / &lt;li&gt;</code><span>Unordered list for groups of items</span></div>
+        <div class="tag-item"><code>&lt;form&gt;</code><span>Wraps inputs for user data submission</span></div>
+        <div class="tag-item"><code>&lt;input&gt;</code><span>Text, email, number fields inside forms</span></div>
+        <div class="tag-item"><code>&lt;button&gt;</code><span>Clickable action triggers</span></div>
+        <div class="tag-item"><code>&lt;section&gt;</code><span>Semantic grouping of related content</span></div>
+        <div class="tag-item"><code>&lt;span&gt;</code><span>Inline container for styling/scripting bits of text</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: SEO HEADER TAGS -->
+  <section class="section section--alt" id="seo" aria-labelledby="seo-heading">
+    <div class="container">
+      <p class="section-label">HTML — Section 2</p>
+      <h2 class="section-title" id="seo-heading">SEO Meta Tags</h2>
+      <p class="section-desc">Search engines read these tags in the <code>&lt;head&gt;</code> to understand your page. Getting them right improves discoverability.</p>
+
+      <ul class="seo-list" role="list">
+        <li><code>&lt;title&gt;</code><span>Page title shown in browser tabs and Google search results — the single most important SEO tag</span></li>
+        <li><code>meta description</code><span>Short summary (150–160 chars) shown under the title in search results; affects click-through rate</span></li>
+        <li><code>meta robots</code><span>Controls whether search engines index the page and follow links (index, noindex, follow, nofollow)</span></li>
+        <li><code>meta viewport</code><span>Essential for mobile — tells browsers how to scale the page; Google penalizes non-mobile-friendly pages</span></li>
+        <li><code>meta keywords</code><span>Largely ignored by modern search engines but still used as documentation for content intent</span></li>
+        <li><code>og:title / og:description</code><span>Open Graph tags control how your page appears when shared on social media (Facebook, LinkedIn, Slack)</span></li>
+        <li><code>canonical link</code><span>Prevents duplicate content penalties by telling search engines which URL is the "real" version</span></li>
+        <li><code>lang attribute</code><span>Setting lang="en" on &lt;html&gt; helps search engines serve the page to the right audience</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 3: 3x3 GRID (divs + spans, no CSS grid/table) -->
+  <section class="section" id="grid" aria-labelledby="grid-heading">
+    <div class="container">
+      <p class="section-label">HTML — Section 3</p>
+      <h2 class="section-title" id="grid-heading">3×3 Grid — No CSS Grid, No Table</h2>
+      <p class="section-desc">Built using only <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> with <code>display: flex</code> on rows. No CSS Grid or HTML table used.</p>
+
+      <div class="pure-grid" role="grid" aria-label="3 by 3 grid example">
+        <div class="pure-row">
+          <div class="pure-cell"><span>Row 1, Col 1</span></div>
+          <div class="pure-cell"><span>Row 1, Col 2</span></div>
+          <div class="pure-cell"><span>Row 1, Col 3</span></div>
+        </div>
+        <div class="pure-row">
+          <div class="pure-cell"><span>Row 2, Col 1</span></div>
+          <div class="pure-cell"><span>Row 2, Col 2</span></div>
+          <div class="pure-cell"><span>Row 2, Col 3</span></div>
+        </div>
+        <div class="pure-row">
+          <div class="pure-cell"><span>Row 3, Col 1</span></div>
+          <div class="pure-cell"><span>Row 3, Col 2</span></div>
+          <div class="pure-cell"><span>Row 3, Col 3</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: BOX MODEL GALLERY -->
+  <section class="section section--alt" id="box-model" aria-labelledby="box-model-heading">
+    <div class="container--wide">
+      <div class="container" style="max-width: var(--content-default); margin-inline: auto; padding: 0;">
+        <p class="section-label">CSS — Section 4</p>
+        <h2 class="section-title" id="box-model-heading">Box Model Gallery</h2>
+        <p class="section-desc">Three rows showing how <strong>border</strong>, <strong>margin</strong>, and <strong>padding</strong> each affect an element at 0px, 5/10px, and 20/24px. Each column varies one property.</p>
+      </div>
+
+      <div class="box-gallery">
+        <!-- Row 1: Varying BORDER -->
+        <div class="box-row">
+          <p class="box-row-label">Row 1 — Varying <strong>Border</strong> (margin: 8px, padding: 12px fixed)</p>
+          <div class="box-demo b0"><span>border: 0px</span></div>
+          <div class="box-demo b5"><span>border: 5px</span></div>
+          <div class="box-demo b10"><span>border: 10px</span></div>
+        </div>
+
+        <!-- Row 2: Varying MARGIN -->
+        <div class="box-row">
+          <p class="box-row-label">Row 2 — Varying <strong>Margin</strong> (border: 3px, padding: 12px fixed)</p>
+          <div class="box-demo m0"><span>margin: 0px</span></div>
+          <div class="box-demo m10"><span>margin: 10px</span></div>
+          <div class="box-demo m20"><span>margin: 20px</span></div>
+        </div>
+
+        <!-- Row 3: Varying PADDING -->
+        <div class="box-row">
+          <p class="box-row-label">Row 3 — Varying <strong>Padding</strong> (border: 3px, margin: 8px fixed)</p>
+          <div class="box-demo p0"><span>padding: 0px</span></div>
+          <div class="box-demo p10"><span>padding: 10px</span></div>
+          <div class="box-demo p24"><span>padding: 24px</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: FONT SIZES -->
+  <section class="section" id="fonts" aria-labelledby="fonts-heading">
+    <div class="container">
+      <p class="section-label">CSS — Section 5</p>
+      <h2 class="section-title" id="fonts-heading">6 Font Sizes — Inline Styling</h2>
+      <p class="section-desc">Same text, six different size units. A mix of absolute (px, pt) and relative (em, rem, %, vw) units — each explained with a real-world use case.</p>
+
+      <ul class="font-list" role="list">
+        <li>
+          <span style="font-size: 12px; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">12px — Absolute. Good for fine print, footnotes, or legal disclaimers where size must never change regardless of user settings.</span>
+        </li>
+        <li>
+          <span style="font-size: 1rem; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">1rem — Relative to root font size. Best for body text — respects the user's browser font preference (e.g., if they set 20px as default, this scales up too).</span>
+        </li>
+        <li>
+          <span style="font-size: 1.25em; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">1.25em — Relative to parent element font size. Useful inside components like cards or blockquotes where you want a heading slightly larger than the card body.</span>
+        </li>
+        <li>
+          <span style="font-size: 120%; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">120% — Relative to parent. Similar to em but can feel more intuitive when working with designers who think in percentages.</span>
+        </li>
+        <li>
+          <span style="font-size: 18pt; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">18pt — Absolute (1pt = 1/72 inch). Most useful for print stylesheets (@media print) where physical size matters.</span>
+        </li>
+        <li>
+          <span style="font-size: 3vw; display: block;">The quick brown fox jumps over the lazy dog.</span>
+          <span class="unit-label">3vw — Relative to viewport width. Great for hero headings that should scale with the screen size, like large banners or full-page titles.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 6: POSITIONING -->
+  <section class="section section--alt" id="positioning" aria-labelledby="positioning-heading">
+    <div class="container">
+      <p class="section-label">CSS — Section 6</p>
+      <h2 class="section-title" id="positioning-heading">4 Positioning Options</h2>
+      <p class="section-desc">CSS gives you fine-grained control over where elements appear. Below is a live demo with all four main types.</p>
+
+      <div class="position-demo" aria-label="Positioning demo area">
+        <div class="pos-box pos-static" aria-label="Static position">static — default flow</div>
+        <div class="pos-box pos-relative" aria-label="Relative position">relative — nudged 12px down, 20px right</div>
+        <div class="pos-box pos-fixed-demo" aria-label="Sticky position">sticky — stays at top: 80px while scrolling</div>
+        <div class="pos-box pos-absolute" aria-label="Absolute position">absolute — anchored to bottom-right corner</div>
+      </div>
+
+      <ul class="pos-legend" role="list">
+        <li><span class="pos-dot" style="background:var(--color-primary)"></span><div><strong>static</strong> — the default. Element sits in the normal document flow. Use when you don't need special placement.</div></li>
+        <li><span class="pos-dot" style="background:var(--color-warning)"></span><div><strong>relative</strong> — element stays in flow but can be nudged with top/left/right/bottom. Great for fine-tuning an element's position without affecting neighbors.</div></li>
+        <li><span class="pos-dot" style="background:#437a22"></span><div><strong>sticky</strong> — acts like relative until you scroll past it, then sticks to a position. Perfect for navbars and section headings that should follow the user down the page.</div></li>
+        <li><span class="pos-dot" style="background:var(--color-error)"></span><div><strong>absolute</strong> — removed from the document flow and positioned relative to the nearest positioned ancestor. Use for tooltips, badges, and overlays like "New" labels on cards.</div></li>
+        <li><span class="pos-dot" style="background:var(--color-text-muted)"></span><div><strong>fixed</strong> — like absolute but relative to the viewport, not an ancestor. The footer of this page uses <code>position: fixed</code> to always stay at the bottom of the screen.</div></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER (fixed to bottom) ===== -->
+<footer aria-label="Site footer">
+  <p>HTML + CSS + JS Self Assessment &mdash; Northeastern University</p>
+  <ul class="footer-links" role="list">
+    <li><a href="#html-tags">HTML</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#box-model">CSS</a></li>
+    <li><a href="#positioning">Positioning</a></li>
+  </ul>
+</footer>
+
+<!-- ===== DARK MODE TOGGLE ===== -->
+<script>
+(function(){
+  const t = document.getElementById('theme-toggle');
+  const r = document.documentElement;
+  let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  r.setAttribute('data-theme', d);
+  const moonIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  const sunIcon  = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  t.innerHTML = d === 'dark' ? sunIcon : moonIcon;
+  t.addEventListener('click', function() {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
+    t.innerHTML = d === 'dark' ? sunIcon : moonIcon;
+  });
+})();
+</script>
+
+</body>
+</html>
