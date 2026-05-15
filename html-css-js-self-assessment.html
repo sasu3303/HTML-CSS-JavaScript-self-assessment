@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <style>
-    /* ===== DESIGN TOKENS ===== */
+
     :root, [data-theme="light"] {
       --font-display: 'Cabinet Grotesk', 'Helvetica Neue', sans-serif;
       --font-body: 'Satoshi', 'Inter', sans-serif;
@@ -80,7 +80,7 @@
       --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
     }
 
-    /* ===== BASE ===== */
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       -webkit-font-smoothing: antialiased;
@@ -88,13 +88,6 @@
       scroll-padding-top: var(--space-16);
     }
 
-    /*
-     * STICKY FOOTER PATTERN (flexbox method — MDN recommended):
-     * body is a flex column of min-height 100dvh.
-     * <main> gets flex: 1 so it grows and pushes the footer down.
-     * footer is normal flow — no position tricks needed.
-     * This ensures the footer is always at the bottom even on short pages.
-     */
     body {
       display: flex;
       flex-direction: column;
@@ -125,7 +118,6 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
 
-    /* ===== LAYOUT ===== */
     .container       { max-width: var(--content-default); margin-inline: auto; padding-inline: var(--space-6); }
     .container--wide { max-width: var(--content-wide);    margin-inline: auto; padding-inline: var(--space-6); }
 
@@ -135,7 +127,6 @@
       background: var(--color-surface);
       border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.10);
       box-shadow: var(--shadow-sm);
-      /* sticky header stays in normal flex flow */
     }
     nav {
       display: flex; align-items: center; justify-content: space-between;
@@ -161,10 +152,8 @@
     }
     #theme-toggle:hover { color: var(--color-primary); background: var(--color-primary-highlight); }
 
-    /* ===== MAIN — grows to fill available space ===== */
     main { flex: 1; }
 
-    /* ===== HERO ===== */
     .hero {
       padding: var(--space-20) var(--space-6) var(--space-16);
       background: var(--color-surface);
@@ -202,7 +191,6 @@
       margin-bottom: var(--space-4); max-width: 65ch;
     }
 
-    /* ===== TAG GRID ===== */
     .tag-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: var(--space-3); margin-top: var(--space-4);
@@ -219,7 +207,7 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* ===== 3×3 GRID — only divs & spans, only flexbox (no CSS grid, no table) ===== */
+    /* ===== 3×3 GRID ===== */
     .pure-grid { margin-top: var(--space-6); }
     .pure-row  { display: flex; }
     .pure-cell {
@@ -249,15 +237,15 @@
     }
     .box-demo span { font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; }
 
-    /* Border row */
+    
     .b0  { border: 0px  solid var(--color-primary); margin: 8px; padding: 12px; }
     .b5  { border: 5px  solid var(--color-primary); margin: 8px; padding: 12px; }
     .b10 { border: 10px solid var(--color-primary); margin: 8px; padding: 12px; }
-    /* Margin row */
+    
     .m0  { border: 3px solid var(--color-warning); margin: 0px;  padding: 12px; }
     .m10 { border: 3px solid var(--color-warning); margin: 10px; padding: 12px; }
     .m20 { border: 3px solid var(--color-warning); margin: 20px; padding: 12px; }
-    /* Padding row */
+   
     .p0  { border: 3px solid var(--color-success); margin: 8px; padding: 0px;  }
     .p10 { border: 3px solid var(--color-success); margin: 8px; padding: 10px; }
     .p24 { border: 3px solid var(--color-success); margin: 8px; padding: 24px; }
@@ -275,7 +263,7 @@
       margin-top: var(--space-1);
     }
 
-    /* ===== POSITIONING DEMO ===== */
+    /* ===== POSITIONING ===== */
     .position-demo {
       position: relative; min-height: 340px;
       background: var(--color-surface-2); border-radius: var(--radius-xl);
@@ -290,26 +278,18 @@
       display: block; font-weight: 400; font-size: var(--text-xs);
       margin-top: var(--space-2); opacity: 0.9;
     }
-    /* 1. static — default document flow */
+    
     .pos-static   { position: static;   background: var(--color-primary); margin-bottom: var(--space-3); }
-    /* 2. relative — offset from its own normal position */
+  
     .pos-relative { position: relative; background: var(--color-warning);
                     top: 12px; left: 20px; margin-bottom: var(--space-3); }
-    /* 3. sticky — sticks inside its scrolling parent */
+  
     .pos-sticky   { position: sticky; top: 80px; background: var(--color-success);
                     align-self: flex-start; margin-bottom: var(--space-3); }
-    /* 4. absolute — lifted out of flow, placed relative to nearest positioned ancestor */
+   
     .pos-absolute { position: absolute; background: var(--color-error);
                     bottom: var(--space-4); right: var(--space-6); }
 
-    /* ===== FOOTER — Sticky Footer (Flexbox Method) ===== */
-    /*
-     * No position:fixed or position:absolute tricks here.
-     * Because body is display:flex + flex-direction:column,
-     * and <main> has flex:1, the footer naturally sits at
-     * the bottom of the viewport on short pages, and below
-     * all content on long pages — without ever overlapping.
-     */
     footer {
       background: var(--color-surface);
       border-top: 1px solid oklch(from var(--color-text) l c h / 0.10);
@@ -322,7 +302,6 @@
     .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); text-decoration: none; }
     .footer-links a:hover { color: var(--color-primary); }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
       nav { padding: var(--space-3) var(--space-4); }
       .nav-links { display: none; }
@@ -336,10 +315,9 @@
 
 <body>
 
-<!-- Skip link for keyboard accessibility — sr-only class defined in base styles -->
+
 <a href="#main" class="sr-only">Skip to content</a>
 
-<!-- NAVBAR with sticky positioning -->
 <header>
   <nav aria-label="Main navigation">
     <a href="#" class="nav-logo" aria-label="Home">
@@ -359,16 +337,16 @@
     </ul>
     <div class="nav-right">
       <button id="theme-toggle" aria-label="Switch to dark mode" data-theme-toggle>
-        <!-- icon injected by JS -->
+
       </button>
     </div>
   </nav>
 </header>
 
-<!-- MAIN CONTENT — flex:1 ensures it pushes footer to bottom -->
+
 <main id="main">
 
-  <!-- HERO — one main h1 heading for the whole page -->
+ 
   <section class="hero" aria-labelledby="hero-heading">
     <div class="hero-inner">
       <span class="hero-tag">Self Assessment</span>
@@ -376,13 +354,13 @@
     </div>
   </section>
 
-  <!-- SECTION 1 — HTML Fundamentals (two subsections = two h3 subheadings) -->
+ 
   <section class="section" id="html-fundamentals" aria-labelledby="html-fundamentals-heading">
     <div class="container">
       <p class="section-label">Section 1</p>
       <h2 class="section-title" id="html-fundamentals-heading">HTML Fundamentals</h2>
 
-      <!-- Subheader 1a: 10 useful HTML tags -->
+  
       <h3 class="subsection-title" style="margin-top:0">10 Useful HTML Tags</h3>
       <div class="tag-grid">
         <div class="tag-item"><code>&lt;div&gt;</code></div>
@@ -397,7 +375,7 @@
         <div class="tag-item"><code>&lt;span&gt;</code></div>
       </div>
 
-      <!-- Subheader 1b: SEO head tags -->
+     
       <h3 class="subsection-title">Tags for SEO</h3>
 
       <div class="tag-grid">
@@ -413,14 +391,13 @@
     </div>
   </section>
 
-  <!-- SECTION 2 — CSS Layouts (3×3 grid + box model gallery) -->
+
   <section class="section section--alt" id="css-layouts" aria-labelledby="css-layouts-heading">
     <div class="container--wide">
       <div style="max-width: var(--content-default); margin-inline: auto;">
         <p class="section-label">Section 2</p>
         <h2 class="section-title" id="css-layouts-heading">CSS Layout Fundamentals</h2>
 
-        <!-- Subheader 2a: 3×3 grid using only divs/spans + flexbox -->
         <h3 class="subsection-title" style="margin-top:0">3×3 Grid — Only Divs &amp; Spans (no CSS grid, no table)</h3>
         <div class="pure-grid" role="grid" aria-label="3 by 3 grid example">
           <div class="pure-row">
@@ -440,7 +417,7 @@
           </div>
         </div>
 
-        <!-- Subheader 2b: Box model gallery -->
+     
         <h3 class="subsection-title">Box Model Gallery</h3>
         <p class="section-desc">Three rows showing how <strong>border</strong>, <strong>margin</strong>, and <strong>padding</strong> each affect an element. Each row holds the other two fixed and varies only one property across three values.</p>
 
@@ -468,7 +445,7 @@
     </div>
   </section>
 
-  <!-- SECTION 3 — Typography: 6 font sizes with inline styling -->
+
   <section class="section" id="typography" aria-labelledby="typography-heading">
     <div class="container">
       <p class="section-label">Section 3</p>
@@ -516,7 +493,7 @@
     </div>
   </section>
 
-  <!-- SECTION 4 — CSS Positioning (4 types + footer explanation) -->
+  
   <section class="section section--alt" id="positioning" aria-labelledby="positioning-heading">
     <div class="container">
       <p class="section-label">Section 4</p>
@@ -524,25 +501,25 @@
       <p class="section-desc">Each colored box below demonstrates one positioning value.</p>
 
       <div class="position-demo" aria-label="Positioning demo area">
-        <!-- 1. static — default, no top/left/right/bottom effect -->
+       
         <div class="pos-box pos-static">
           <strong>static — default flow</strong>
           <span>The default for every element. Follows the normal document flow; top/left/right/bottom have no effect. Use it when you need an element to simply appear where it belongs in the HTML.</span>
         </div>
 
-        <!-- 2. relative — stays in flow but can be offset -->
+   
         <div class="pos-box pos-relative">
           <strong>relative — nudged 12px↓ 20px→</strong>
           <span>Stays in the normal flow (its space is reserved) but visually shifts by top/left. Use it to fine-tune position or to create a positioning context for absolute children.</span>
         </div>
 
-        <!-- 3. sticky — scrolls with page until it hits the threshold -->
+       
         <div class="pos-box pos-sticky">
           <strong>sticky — stays at top:80px while scrolling</strong>
           <span>Behaves like relative until the user scrolls past the threshold, then sticks. Perfect for section headers or sidebars that should stay visible inside a scrolling container.</span>
         </div>
 
-        <!-- 4. absolute — lifted out of flow, placed relative to nearest positioned ancestor -->
+   
         <div class="pos-box pos-absolute">
           <strong>absolute — bottom-right corner</strong>
           <span>Removed from normal flow and placed precisely relative to the nearest positioned ancestor. Use for overlays, badges, tooltips, or decorative elements anchored to a card corner.</span>
@@ -553,12 +530,7 @@
 
 </main>
 
-<!--
-  FOOTER — sits at the bottom via the flexbox sticky-footer pattern.
-  body { display: flex; flex-direction: column; min-height: 100dvh; }
-  main { flex: 1; }
-  No position:fixed, position:absolute, or padding-bottom hacks needed.
--->
+
 <footer aria-label="Site footer">
   <p>HTML + CSS + JS Self Assessment &mdash; Web Development</p>
   <ul class="footer-links" role="list">
